@@ -29,7 +29,7 @@ public class RegisController extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		RequestDispatcher rpq = request.getRequestDispatcher("WEB-INF/View/Regis.jsp");
-		rpq.include(request, response);
+		rpq.forward(request, response);
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -37,16 +37,18 @@ public class RegisController extends HttpServlet {
 		//x.print(123);
 		try {
 			Connection conn = DBconnect.ConDB();
+			request.setCharacterEncoding("UTF-8");
 			String name = request.getParameter("name");
 			String pass  = request.getParameter("password");
 		//	x.println(name + pass);
+			System.out.println(name + pass);
 			Users user = new Users();
 			user.setName(name);
 			user.setPass(pass);
 			boolean add = RegisDao.InsertAcc(conn, user);
 			if(add) {
 				response.setContentType("text/html");
-				x.println("dang ky thanh cong!Ban co the dang nhap duoc roi");
+				x.println("Regis Success! Now you can login");
 				RequestDispatcher rpq = request.getRequestDispatcher("WEB-INF/View/Login.jsp");
 				rpq.include(request, response);
 				conn.close();
